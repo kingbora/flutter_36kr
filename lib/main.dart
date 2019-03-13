@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
     //配置路由
     final router = new Router();
     Routes.configureRoutes(router);
+    //将路由放置全局变量上
     Window.router = router;
   }
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      //关于ThemeData详情可见docs/ThemeData.md
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -41,8 +43,10 @@ class MyAppEntry extends StatefulWidget {
 }
 
 class _MyAppEntryState extends State<MyAppEntry> {
+  //当前对应的tab索引
   int _selectedIndex = 0;
 
+  //每个tab页对应的页面
   final _navigationPageItems = [
     HomePage(),
     StartKr(),
@@ -51,6 +55,7 @@ class _MyAppEntryState extends State<MyAppEntry> {
     Mine()
   ];
 
+  //底部导航的tab
   List<BottomNavigationBarItem> _navigationBarItems = [
     BottomNavigationBarItem(
       title: Text("首页", style:TextStyle(color: AppColor.bottomBarItemColor)),
@@ -79,10 +84,7 @@ class _MyAppEntryState extends State<MyAppEntry> {
     )
   ];
 
-  void initState() {
-    super.initState();
-  }
-
+  //当tab点击时,更新索引
   void _onItemTapped(int selectedIndex) {
     setState(() {
       _selectedIndex = selectedIndex;
