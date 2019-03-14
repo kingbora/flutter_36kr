@@ -1,5 +1,6 @@
 ### 自定义主题
 在`Flutter`中使用`ThemeData`来在应用中共享颜色和字体样式。
+详细参数配置[入口](https://docs.flutter.io/flutter/material/ThemeData-class.html)
 ### 创建一个全局主题
 在`MaterialApp`中定义一个`ThemeData`就可以了, 如果没有提供的话, `Flutter`会提供一个默认主题。
 ```dart
@@ -24,7 +25,7 @@ Theme(
 )
 ```
 ### 扩展主题
-一般我们通过复制父主题来进行扩展。
+如果你不想覆盖所有的样式，可以继承全局主题，只覆盖部分样式，使用copyWith方法。
 ```dart
 Theme(
     data: Theme.of(context).copyWith(accentColorBrightness: Colors.yellow),

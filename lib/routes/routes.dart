@@ -6,6 +6,7 @@ import 'package:flutter_36kr/routes/router_handler.dart';
 class Routes {
   static String root = "/home/:tabIndex";
   static String login = "/login";
+  static String register = "/register";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
@@ -18,5 +19,7 @@ class Routes {
     router.define(root, handler: homeHandler);
 
     router.define(login, handler: loginHandler);
+
+    router.define(register, handler: registerHandler);
   }
 }
