@@ -14,8 +14,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   FormType _type = FormType.LOGIN_WITH_CODE;
 
-  bool _isAgreePolicy = false;
-
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -58,45 +56,13 @@ class _LoginState extends State<Login> {
             child: CustomForm(
               type: _type,
               changeType: (FormType type) {
-                print("点击了切换");
-                print(type);
                 setState(() {
                   _type = type;
                 });
               },
-            ),
-          ),
-          Container(
-            height: 50.0,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Radio(
-                  groupValue: _isAgreePolicy ? "agree" : "disagree",
-                  value: "agree",
-                  onChanged: (String val) {
-                    setState(() {
-                      _isAgreePolicy = !_isAgreePolicy;
-                    });
-                  },
-                ),
-                Row(
-                  children: <Widget>[
-                    const Text("我已阅读并同意"),
-                    InkWell(
-                      child: const Text(
-                        "《用户协议及隐私政策》",
-                        style: TextStyle(color: AppColor.labelCodeColor),
-                      ),
-                      onTap: () {
-                        print("进入用户协议页面");
-                      },
-                    )
-                  ],
-                )
-              ],
+              onSubmit: (value) {
+                print(value);
+              }
             ),
           ),
           Expanded(

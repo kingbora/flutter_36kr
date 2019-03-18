@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 import 'package:flutter_36kr/constants/style.dart';
 
 class CustomForm extends StatefulWidget {
-  CustomForm({Key key, @required this.type, this.changeType}) : super(key: key);
+  CustomForm({Key key, @required this.type, this.changeType, this.onSubmit})
+      : super(key: key);
 
   final FormType type;
-  final Function changeType;
+  final ValueChanged<FormType> changeType;
+  final ValueChanged onSubmit;
+  final int countdown = 60; //默认60s
   _CustomFormState createState() => _CustomFormState();
 }
 
@@ -20,53 +24,101 @@ class _CustomFormState extends State<CustomForm> {
   //验证码
   String _code;
 
-  Widget _buildPhoneInput(BuildContext context) {
+  //倒计时计时器
+  Timer _timer;
+  //当前倒计时的秒数
+  int _seconds;
+  String _verifyStr = '获取验证码';
+
+  bool _isAgreePolicy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _seconds = widget.countdown;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+    super.dispose();
+  }
+
+  //启动倒计时
+  void _startTimer() {
+    setState(() {
+      _verifyStr = '已发送$_seconds' + 's';
+    });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_seconds == 0) {
+        _cancelTimer();
+        _seconds = widget.countdown;
+        setState(() {});
+        return;
+      }
+      _seconds--;
+      _verifyStr = '已发送$_seconds' + 's';
+      setState(() {});
+      if (_seconds == 0) {
+        _verifyStr = '重新发送';
+      }
+    });
+  }
+
+  //取消倒计时
+  void _cancelTimer() {
+    _timer?.cancel();
+  }
+
+  String validatorPhone(value) {
+    if (value.isEmpty) {
+      return "用户名不能为空";
+    }
+
+    return null;
+  }
+
+  String validatorPassword(value) {
+    if (value.isEmpty) {
+      return "密码不能为空";
+    }
+
+    return null;
+  }
+
+  String validatorCode(value) {
+    if (value.isEmpty) {
+      return "验证码不能为空";
+    }
+
+    return null;
+  }
+
+  Widget _buildPhoneInput() {
     return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
-            InkWell(
-              child: Container(
-                width: 40.0,
-                child: Center(
-                  child: Text("+86"),
-                ),
-              ),
-              onTap: () {
-                showBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        child: const Text("选择框"),
-                      );
-                    });
-              },
-            ),
-            Container(
-              width: 1.0,
-              height: 10.0,
-              color: Color(0xff111111),
-            ),
             Expanded(
               flex: 1,
               child: TextFormField(
                 decoration: InputDecoration(
                   labelText: "输入手机号",
                   labelStyle: TextStyle(color: AppColor.textIndentColor),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.dividerLineColor)),
+                  helperText: '',
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
                 onSaved: (val) {
                   _phone = val;
                 },
+                validator: validatorPhone,
               ),
             )
           ],
         ),
-        Divider(
-          height: 1.0,
-          color: AppColor.dividerLineColor,
-        )
       ],
     );
   }
@@ -79,19 +131,18 @@ class _CustomFormState extends State<CustomForm> {
             decoration: InputDecoration(
               labelText: "输入密码",
               labelStyle: TextStyle(color: AppColor.textIndentColor),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+              border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.dividerLineColor)),
+              helperText: '',
+              contentPadding: EdgeInsets.all(10.0),
             ),
             obscureText: true,
             onSaved: (val) {
               _password = val;
             },
+            validator: validatorPassword,
           ),
         ),
-        Divider(
-          height: 1.0,
-          color: AppColor.dividerLineColor,
-        )
       ],
     );
   }
@@ -99,37 +150,39 @@ class _CustomFormState extends State<CustomForm> {
   Widget _buildCodeInput() {
     return Column(
       children: <Widget>[
-        Row(
+        Stack(
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "输入验证码",
-                  labelStyle: TextStyle(color: AppColor.textIndentColor),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
-                ),
-                onSaved: (val) {
-                  _code = val;
-                },
-              ),
-            ),
             Container(
+              child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "输入验证码",
+                    labelStyle: TextStyle(color: AppColor.textIndentColor),
+                    border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColor.dividerLineColor)),
+                    helperText: '',
+                    contentPadding: EdgeInsets.all(10.0),
+                  ),
+                  onSaved: (val) {
+                    _code = val;
+                  },
+                  validator: validatorCode),
+            ),
+            Positioned(
+              right: 0.0,
+              top: 5.0,
               child: FlatButton(
                 child: Text(
-                  "获取验证码",
+                  _verifyStr,
                   style: TextStyle(color: AppColor.labelCodeColor),
                 ),
-                onPressed: () {},
+                onPressed: (_verifyStr == '重新发送' || _verifyStr == '获取验证码')
+                    ? _startTimer
+                    : null,
               ),
             )
           ],
         ),
-        Divider(
-          height: 1.0,
-          color: AppColor.dividerLineColor,
-        )
       ],
     );
   }
@@ -206,7 +259,7 @@ class _CustomFormState extends State<CustomForm> {
 
   Widget _buildChangeType() {
     switch (widget.type) {
-      case FormType.LOGIN_WITH_CODE:
+      case FormType.LOGIN_WITH_PASSWORD:
         return Container(
           height: 60.0,
           child: Center(
@@ -216,12 +269,13 @@ class _CustomFormState extends State<CustomForm> {
                 style: TextStyle(color: AppColor.labelCodeColor),
               ),
               onTap: () {
+                _formKey.currentState.reset();
                 widget.changeType(FormType.LOGIN_WITH_CODE);
               },
             ),
           ),
         );
-      case FormType.LOGIN_WITH_PASSWORD:
+      case FormType.LOGIN_WITH_CODE:
         return Container(
           height: 60.0,
           child: Center(
@@ -241,10 +295,48 @@ class _CustomFormState extends State<CustomForm> {
     }
   }
 
-  List<Widget> _renderFormItem(BuildContext context) {
+  Widget _buildPolicy() {
+    return Container(
+      height: 50.0,
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Radio(
+            groupValue: _isAgreePolicy,
+            value: true,
+            onChanged: (bool val) {
+              if (val != _isAgreePolicy) {
+                setState(() {
+                  _isAgreePolicy = val;
+                });
+              }
+            },
+          ),
+          Row(
+            children: <Widget>[
+              const Text("我已阅读并同意"),
+              InkWell(
+                child: const Text(
+                  "《用户协议及隐私政策》",
+                  style: TextStyle(color: AppColor.labelCodeColor),
+                ),
+                onTap: () {
+                  print("进入用户协议页面");
+                },
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _renderFormItem() {
     List<Widget> formItems = [];
 
-    formItems.add(_buildPhoneInput(context));
+    formItems.add(_buildPhoneInput());
 
     if (widget.type == FormType.LOGIN_WITH_PASSWORD ||
         widget.type == FormType.REGISTER) {
@@ -264,6 +356,8 @@ class _CustomFormState extends State<CustomForm> {
 
     formItems.add(_buildSubmitButton());
 
+    formItems.add(_buildPolicy());
+
     return formItems;
   }
 
@@ -272,9 +366,19 @@ class _CustomFormState extends State<CustomForm> {
 
     if (_form.validate()) {
       _form.save();
-      print(_phone);
-      print(_password);
-      print(_code);
+      switch (widget.type) {
+        case FormType.LOGIN_WITH_CODE:
+          widget.onSubmit({"phone": _phone, "code": _code});
+          break;
+        case FormType.LOGIN_WITH_PASSWORD:
+          widget.onSubmit({"phone": _phone, "password": _password});
+          break;
+        case FormType.REGISTER:
+          widget.onSubmit(
+              {"phone": _phone, "password": _password, "code": _code});
+          break;
+        default:
+      }
     }
   }
 
@@ -282,7 +386,7 @@ class _CustomFormState extends State<CustomForm> {
     return Form(
       key: _formKey,
       child: Column(
-        children: _renderFormItem(context),
+        children: _renderFormItem(),
       ),
     );
   }

@@ -7,7 +7,7 @@ import 'package:flutter_36kr/views/start_kr/start_kr.dart';
 import 'package:flutter_36kr/views/venture_capital/venture_capital.dart';
 import 'package:flutter_36kr/views/mine/mine.dart';
 
-import 'package:flutter_36kr/constants/style.dart';
+import 'package:flutter_36kr/constants/theme.dart';
 
 import 'package:flutter_36kr/routes/routes.dart';
 import 'package:flutter_36kr/stores/stores.dart';
@@ -28,9 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       //关于ThemeData详情可见docs/ThemeData.md
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: MyTheme.androidTheme,
       home: MyAppEntry(),
       onGenerateRoute: Window.router.generator,
     );
@@ -58,29 +56,24 @@ class _MyAppEntryState extends State<MyAppEntry> {
   //底部导航的tab
   List<BottomNavigationBarItem> _navigationBarItems = [
     BottomNavigationBarItem(
-      title: Text("首页", style:TextStyle(color: AppColor.bottomBarItemColor)),
-      icon: Icon(IconData(0xe60e, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemColor),
-      activeIcon: Icon(IconData(0xe60e, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemActiveColor)
+      title: Text("首页"),
+      icon: Icon(Icons.home),
     ),
     BottomNavigationBarItem(
-      title: Text("开氪", style:TextStyle(color: AppColor.bottomBarItemColor)),
-      icon: Icon(IconData(0xe610, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemColor),
-      activeIcon: Icon(IconData(0xe610, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemActiveColor)
+      title: Text("开氪"),
+      icon: Icon(Icons.access_time),
     ),
     BottomNavigationBarItem(
-      title: Text("发现", style:TextStyle(color: AppColor.bottomBarItemColor)),
-      icon: Icon(IconData(0xe64b, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemColor),
-      activeIcon: Icon(IconData(0xe64b, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemActiveColor)
+      title: Text("发现"),
+      icon: Icon(Icons.explore),
     ),
     BottomNavigationBarItem(
-      title: Text("创投", style:TextStyle(color: AppColor.bottomBarItemColor)),
-      icon: Icon(IconData(0xe61d, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemColor),
-      activeIcon: Icon(IconData(0xe61d, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemActiveColor)
+      title: Text("创投"),
+      icon: Icon(Icons.show_chart),
     ),
     BottomNavigationBarItem(
-      title: Text("我的", style:TextStyle(color: AppColor.bottomBarItemColor)),
-      icon: Icon(IconData(0xe60b, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemColor),
-      activeIcon: Icon(IconData(0xe60b, fontFamily: AppFonts.FontFamily,), color: AppColor.bottomBarItemActiveColor)
+      title: Text("我的"),
+      icon: Icon(Icons.person_outline),
     )
   ];
 
