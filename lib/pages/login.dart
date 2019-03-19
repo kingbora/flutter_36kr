@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_36kr/stores/stores.dart';
 import 'package:flutter_36kr/routes/routes.dart';
 
 import 'package:flutter_36kr/constants/style.dart';
@@ -24,7 +23,7 @@ class _LoginState extends State<Login> {
         leading: IconButton(
           icon: Icon(Icons.close, color: AppColor.bottomBarItemActiveColor),
           onPressed: () {
-            Window.router.pop(context);
+            Routes.routes.pop(context);
           },
         ),
         actions: <Widget>[
@@ -34,7 +33,7 @@ class _LoginState extends State<Login> {
               style: TextStyle(color: AppColor.bottomBarItemActiveColor),
             ),
             onPressed: () {
-              Window.router.navigateTo(context, Routes.register);
+              Routes.routes.navigateTo(context, Routes.register);
             },
           )
         ],

@@ -103,6 +103,7 @@ class _CustomFormState extends State<CustomForm> {
             Expanded(
               flex: 1,
               child: TextFormField(
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   labelText: "输入手机号",
                   labelStyle: TextStyle(color: AppColor.textIndentColor),
@@ -128,6 +129,7 @@ class _CustomFormState extends State<CustomForm> {
       children: <Widget>[
         Container(
           child: TextFormField(
+            keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelText: "输入密码",
               labelStyle: TextStyle(color: AppColor.textIndentColor),
@@ -154,6 +156,7 @@ class _CustomFormState extends State<CustomForm> {
           children: <Widget>[
             Container(
               child: TextFormField(
+                keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: "输入验证码",
                     labelStyle: TextStyle(color: AppColor.textIndentColor),

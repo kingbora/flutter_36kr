@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_36kr/routes/router_handler.dart';
 
 class Routes {
-  static String root = "/home/:tabIndex";
+  static Router routes;
+  static String root = "/root";
+  static String home = "/home/:tabIndex";
   static String login = "/login";
   static String register = "/register";
 
@@ -15,8 +17,10 @@ class Routes {
       }
     );
 
+    router.define(root, handler: splashHandler);
+
     //主入口
-    router.define(root, handler: homeHandler);
+    router.define(home, handler: homeHandler);
 
     router.define(login, handler: loginHandler);
 

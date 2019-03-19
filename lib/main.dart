@@ -10,9 +10,10 @@ import 'package:flutter_36kr/views/mine/mine.dart';
 import 'package:flutter_36kr/constants/theme.dart';
 
 import 'package:flutter_36kr/routes/routes.dart';
-import 'package:flutter_36kr/stores/stores.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   MyApp() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     final router = new Router();
     Routes.configureRoutes(router);
     //将路由放置全局变量上
-    Window.router = router;
+    Routes.routes = router;
   }
 
   @override
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       //关于ThemeData详情可见docs/ThemeData.md
       theme: MyTheme.androidTheme,
       home: MyAppEntry(),
-      onGenerateRoute: Window.router.generator,
+      onGenerateRoute: Routes.routes.generator,
     );
   }
 }
@@ -40,9 +41,11 @@ class MyAppEntry extends StatefulWidget {
   _MyAppEntryState createState() => _MyAppEntryState();
 }
 
-class _MyAppEntryState extends State<MyAppEntry> {
+class _MyAppEntryState extends State<MyAppEntry>
+    with SingleTickerProviderStateMixin {
   //当前对应的tab索引
   int _selectedIndex = 0;
+  TabController _tabController;
 
   //每个tab页对应的页面
   final _navigationPageItems = [
@@ -53,29 +56,22 @@ class _MyAppEntryState extends State<MyAppEntry> {
     Mine()
   ];
 
-  //底部导航的tab
-  List<BottomNavigationBarItem> _navigationBarItems = [
-    BottomNavigationBarItem(
-      title: Text("首页"),
-      icon: Icon(Icons.home),
-    ),
-    BottomNavigationBarItem(
-      title: Text("开氪"),
-      icon: Icon(Icons.access_time),
-    ),
-    BottomNavigationBarItem(
-      title: Text("发现"),
-      icon: Icon(Icons.explore),
-    ),
-    BottomNavigationBarItem(
-      title: Text("创投"),
-      icon: Icon(Icons.show_chart),
-    ),
-    BottomNavigationBarItem(
-      title: Text("我的"),
-      icon: Icon(Icons.person_outline),
-    )
-  ];
+  @override
+  void initState() {
+    super.initState();
+    print(_navigationPageItems.length);
+    _tabController = TabController(
+      length: 5,
+      initialIndex: _selectedIndex,
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   //当tab点击时,更新索引
   void _onItemTapped(int selectedIndex) {
@@ -83,16 +79,78 @@ class _MyAppEntryState extends State<MyAppEntry> {
       _selectedIndex = selectedIndex;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _navigationPageItems.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: _navigationBarItems,
-        currentIndex: _selectedIndex,
-        type:BottomNavigationBarType.fixed,
-        onTap: _onItemTapped,
+      body: _navigationPageItems[_selectedIndex],
+      bottomNavigationBar: Container(
+        height: 56.0,
+        width: double.infinity,
+        child: TabBar(
+          tabs: <Widget>[
+            Tab(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.home),
+                  Container(
+                    child: Text("主页"),
+                  )
+                ],
+              ),
+            ),
+            Tab(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.access_time),
+                  Container(
+                    child: Text("开氪"),
+                  )
+                ],
+              ),
+            ),
+            Tab(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.explore),
+                  Container(
+                    child: Text("发现"),
+                  )
+                ],
+              ),
+            ),
+            Tab(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.show_chart),
+                  Container(
+                    child: Text("创投"),
+                  )
+                ],
+              ),
+            ),
+            Tab(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.person_outline),
+                  Container(
+                    child: Text("我的"),
+                  )
+                ],
+              ),
+            ),
+          ],
+          controller: _tabController,
+          onTap: _onItemTapped,
+          indicatorWeight: 0.00001,
+          labelColor: Color(0xff000000),
+          unselectedLabelColor: Color(0xff999999),
+        ),
       ),
     );
   }
