@@ -5,10 +5,14 @@ import 'package:flutter_36kr/routes/router_handler.dart';
 
 class Routes {
   static Router routes;
+  //过渡页
   static String root = "/root";
+  //主入口, tab页
   static String home = "/home/:tabIndex";
+  //登录
   static String login = "/login";
-  static String register = "/register";
+  //设置密码
+  static String confirmPsw = "/confirm";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
@@ -24,6 +28,6 @@ class Routes {
 
     router.define(login, handler: loginHandler);
 
-    router.define(register, handler: registerHandler);
+    router.define(confirmPsw, handler: confirmPasswordHandler);
   }
 }

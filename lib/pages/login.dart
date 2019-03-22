@@ -26,27 +26,16 @@ class _LoginState extends State<Login> {
             Routes.routes.pop(context);
           },
         ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text(
-              "注册",
-              style: TextStyle(color: AppColor.bottomBarItemActiveColor),
-            ),
-            onPressed: () {
-              Routes.routes.navigateTo(context, Routes.register);
-            },
-          )
-        ],
       ),
       body: Column(
         children: <Widget>[
           Container(
-            height: 80.0,
+            height: 70.0,
             child: Center(
               child: Image.asset(
                 "assets/images/logo.png",
                 fit: BoxFit.fitHeight,
-                height: 40.0,
+                height: 35.0,
               ),
             ),
           ),

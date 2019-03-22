@@ -3,7 +3,7 @@ import 'package:fluro/fluro.dart';
 
 import 'package:flutter_36kr/main.dart';
 import 'package:flutter_36kr/pages/login.dart';
-import 'package:flutter_36kr/pages/register.dart';
+import 'package:flutter_36kr/pages/confirm_password.dart';
 import 'package:flutter_36kr/views/splash.dart';
 
 var homeHandler = new Handler(
@@ -18,9 +18,9 @@ var loginHandler = new Handler(
   }
 );
 
-var registerHandler = new Handler(
+var confirmPasswordHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return new Register();
+    return new ConfirmPassword();
   }
 );
 
