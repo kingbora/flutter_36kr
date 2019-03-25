@@ -1,0 +1,25 @@
+{
+  "name": "flutter-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "supervisor –harmony ./src/index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-convert": "^1.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-static-cache": "^5.1.2",
+    "markdown-it": "^8.4.2",
+    "moment": "^2.24.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.1.1"
+  }
+}
